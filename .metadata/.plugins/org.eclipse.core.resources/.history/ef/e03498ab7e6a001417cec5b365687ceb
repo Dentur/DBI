@@ -21,10 +21,8 @@ public class P7A1a {
 		Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 		con = DriverManager.getConnection(connectionURL);
 		
-		String SQLL = "DELETE FROM tellers;DELETE FROM accounts;DELETE FROM branches;";
-		Statement st = con.createStatement();
-		int l = st.executeUpdate(SQLL);
-		st.close();
+		String SQL = "DELETE FROM tellers;DELETE FROM accounts;DELETE FROM branches;";
+		
 		//TODO N 
 		int n = 10;
 		
@@ -46,7 +44,7 @@ public class P7A1a {
 		}
 		for(int i = 1; i < n*10; i++)
 		{
-			String SQL = "INSERT INTO tellers (tellerid, tellername, balance, branchid, address) VALUES("+i+",'abcbaccbaacbbcaabca', 0, 1, 'bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcr');";
+			String SQL = "INSERT INTO tellers (tellerid, tellername, balance, branchid, address) VALUES("+i+",'abcbaccbaacbbcaabca', 0, 1, 'bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcr';";
 			stmt = con.createStatement();
 	        int v = stmt.executeUpdate(SQL);
 	        //rs.close();

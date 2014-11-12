@@ -46,7 +46,7 @@ public class P7A1a {
 		}
 		for(int i = 1; i < n*10; i++)
 		{
-			String SQL = "INSERT INTO tellers (tellerid, tellername, balance, branchid, address) VALUES("+i+",'abcbaccbaacbbcaabca', 0, 1, 'bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcr');";
+			String SQL = "INSERT INTO tellers (tellerid, tellername, balance, branchid, address) VALUES("+i+",'abcbaccbaacbbcaabca', 0, 1, 'bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcr';";
 			stmt = con.createStatement();
 	        int v = stmt.executeUpdate(SQL);
 	        //rs.close();
