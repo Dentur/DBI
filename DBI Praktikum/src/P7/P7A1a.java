@@ -59,12 +59,10 @@ public class P7A1a {
 					pst.setString(2,"bcerabcerabcerabcer");
 					pst.setInt(3,0);
 					pst.setString(4, "bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabr");
-					sTime = System.nanoTime();
-					pst.executeUpdate();
-					eTime = System.nanoTime();
-					time += eTime - sTime;
+					pst.addBatch();
 				}
 				sTime = System.nanoTime();
+				pst.executeBatch();
 				con.commit();
 				pst.close();
 				eTime = System.nanoTime();
@@ -92,12 +90,10 @@ public class P7A1a {
 					pst.setInt(3,0);
 					pst.setInt(4, 1);
 					pst.setString(5, "bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcr");
-					sTime = System.nanoTime();
-					pst.executeUpdate();
-					eTime = System.nanoTime();
-					time += eTime - sTime;
+					pst.addBatch();
 				}
 				sTime = System.nanoTime();
+				pst.executeBatch();
 				con.commit();
 				pst.close();
 				eTime = System.nanoTime();
@@ -125,12 +121,10 @@ public class P7A1a {
 					pst.setInt(3,0);
 					pst.setInt(4, 1);
 					pst.setString(5, "bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcr");
-					sTime = System.nanoTime();
-					pst.executeUpdate();
-					eTime = System.nanoTime();
-					time += eTime - sTime;
+					pst.addBatch();
 				}
 				sTime = System.nanoTime();
+				pst.executeBatch();
 				con.commit();
 				pst.close();
 				eTime = System.nanoTime();
