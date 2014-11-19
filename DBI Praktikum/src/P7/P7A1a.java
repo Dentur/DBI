@@ -20,6 +20,7 @@ public class P7A1a {
 		//Establish the connection
 		
 		try {
+			PreparedStatement pst;
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 			
 			sTime = System.nanoTime();
@@ -27,29 +28,39 @@ public class P7A1a {
 			eTime = System.nanoTime();
 			time += eTime - sTime;
 			
-			String SQLL = "DELETE FROM tellers;DELETE FROM accounts;DELETE FROM branches;";
-			Statement st = con.createStatement();
-			int l = st.executeUpdate(SQLL);
-			st.close();
+			
 			//TODO N 
-			int ns[] = {10, 20, 50};
-			for(int index = 0; index < 3; index++)
+			int ns[] = {2, 3, 4};
+			//int ns[] = {10, 20, 50};
+			for(int index = 0; index < 1; index++)
 			{
+				String SQLL = "DELETE FROM tellers;DELETE FROM accounts;DELETE FROM branches;";
+				Statement st = con.createStatement();
+				int l = st.executeUpdate(SQLL);
+				st.close();
+				
 				int n = ns[index];
 				time = 0;
 				
 				con.setAutoCommit(false);
 				
+				sTime = System.nanoTime();
+				pst = con.prepareStatement("INSERT INTO branches (branchid, branchname, balance, address) "+
+						"VALUES (?,?,?,?);");
+				eTime = System.nanoTime();
+				time += eTime - sTime;
 				for(int i = 1; i < n; i++)
 				{
-					String SQL = "INSERT INTO branches (branchid, branchname, balance, address) "+
-							"VALUES ("+i+",'bcerabcerabcerabcer',0,'bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabr');";
+					//String SQL = "INSERT INTO branches (branchid, branchname, balance, address) "+
+							//"VALUES ("+i+",'bcerabcerabcerabcer',0,'bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabr');";
+					
+					
+					pst.setInt(1, i);
+					pst.setString(2,"bcerabcerabcerabcer");
+					pst.setInt(3,0);
+					pst.setString(4, "bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabr");
 					sTime = System.nanoTime();
-					stmt = con.createStatement();
-			        int v = stmt.executeUpdate(SQL);
-			        //rs.close();
-			        stmt.close();
-	
+					pst.executeUpdate();
 					eTime = System.nanoTime();
 					time += eTime - sTime;
 				}
@@ -57,9 +68,16 @@ public class P7A1a {
 				con.commit();
 				eTime = System.nanoTime();
 				time += eTime - sTime;
+				
+				sTime = System.nanoTime();
+				pst = con.prepareStatement("INSERT INTO accounts (accid, name, balance, branchid, address) "+
+						"VALUES (?,?,?,?,?);");
+				eTime = System.nanoTime();
+				time += eTime - sTime;
 				for(int i = 1; i < n*100000; i++)
 				{
-					String SQL = "INSERT INTO accounts (accid, name, balance, branchid, address) VALUES("+i+", 'abcabcabcabcbacbacb', 0, 1, 'bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcr');";
+					/*String SQL = "INSERT INTO accounts (accid, name, balance, branchid, address) VALUES"+
+					 ("+i+", 'abcabcabcabcbacbacb', 0, 1, 'bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcr');";
 					
 					sTime = System.nanoTime();
 					stmt = con.createStatement();
@@ -67,21 +85,46 @@ public class P7A1a {
 					stmt.close();
 	
 					eTime = System.nanoTime();
+					time += eTime - sTime;*/
+					pst.setInt(1, i);
+					pst.setString(2,"abcabcabcabcbacbacb");
+					pst.setInt(3,0);
+					pst.setInt(4, 1);
+					pst.setString(5, "bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcr");
+					sTime = System.nanoTime();
+					pst.executeUpdate();
+					eTime = System.nanoTime();
 					time += eTime - sTime;
 				}
 				sTime = System.nanoTime();
 				con.commit();
 				eTime = System.nanoTime();
 				time += eTime - sTime;
+				
+				sTime = System.nanoTime();
+				pst = con.prepareStatement("INSERT INTO tellers (tellerid, tellername, balance, branchid, address) "+
+						"VALUES (?,?,?,?,?);");
+				eTime = System.nanoTime();
+				time += eTime - sTime;
 				for(int i = 1; i < n*10; i++)
 				{
-					String SQL = "INSERT INTO tellers (tellerid, tellername, balance, branchid, address) VALUES("+i+",'abcbaccbaacbbcaabca', 0, 1, 'bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcr');";
+					/*String SQL = "INSERT INTO tellers (tellerid, tellername, balance, branchid, address) "+
+					 * "VALUES("+i+",'abcbaccbaacbbcaabca', 0, 1, 'bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcr');";
 					
 					sTime = System.nanoTime();
 					stmt = con.createStatement();
 			        int v = stmt.executeUpdate(SQL);
 			        //rs.close();
 			        stmt.close();
+					eTime = System.nanoTime();
+					time += eTime - sTime;*/
+					pst.setInt(1, i);
+					pst.setString(2,"abcbaccbaacbbcaabca");
+					pst.setInt(3,0);
+					pst.setInt(4, 1);
+					pst.setString(5, "bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcr");
+					sTime = System.nanoTime();
+					pst.executeUpdate();
 					eTime = System.nanoTime();
 					time += eTime - sTime;
 				}
