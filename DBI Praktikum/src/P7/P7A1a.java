@@ -159,7 +159,7 @@ public class P7A1a {
 				System.out.print("fertig");
 				System.out.println("Zeit[ms] bei n: + "+n+": "+ time / (float)1000000);
 				eTime2 = System.nanoTime();
-				System.out.println("Zeit[ms] gesanntProgramm bei n: + "+n+": "+ (sTime2 - eTime2) / (float)1000000);
+				System.out.println("Zeit[ms] gesanntProgramm bei n: + "+n+": "+ (eTime2 - sTime2) / (float)1000000);
 			}
 			
 		}
