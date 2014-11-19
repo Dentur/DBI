@@ -32,60 +32,66 @@ public class P7A1a {
 			int l = st.executeUpdate(SQLL);
 			st.close();
 			//TODO N 
-			int n = 10;
-			
-			con.setAutoCommit(false);
-			
-			for(int i = 1; i < n; i++)
+			int ns[] = {10, 20, 50};
+			for(int index = 0; index < 3; index++)
 			{
-				String SQL = "INSERT INTO branches (branchid, branchname, balance, address) "+
-						"VALUES ("+i+",'bcerabcerabcerabcer',0,'bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabr');";
-				sTime = System.nanoTime();
-				stmt = con.createStatement();
-		        int v = stmt.executeUpdate(SQL);
-		        //rs.close();
-		        stmt.close();
-
-				eTime = System.nanoTime();
-				time += eTime - sTime;
-			}
-			sTime = System.nanoTime();
-			con.commit();
-			eTime = System.nanoTime();
-			time += eTime - sTime;
-			for(int i = 1; i < n*100000; i++)
-			{
-				String SQL = "INSERT INTO accounts (accid, name, balance, branchid, address) VALUES("+i+", 'abcabcabcabcbacbacb', 0, 1, 'bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcr');";
+				int n = ns[index];
+				time = 0;
 				
-				sTime = System.nanoTime();
-				stmt = con.createStatement();
-				int v = stmt.executeUpdate(SQL);
-				stmt.close();
-
-				eTime = System.nanoTime();
-				time += eTime - sTime;
-			}
-			sTime = System.nanoTime();
-			con.commit();
-			eTime = System.nanoTime();
-			time += eTime - sTime;
-			for(int i = 1; i < n*10; i++)
-			{
-				String SQL = "INSERT INTO tellers (tellerid, tellername, balance, branchid, address) VALUES("+i+",'abcbaccbaacbbcaabca', 0, 1, 'bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcr');";
+				con.setAutoCommit(false);
 				
+				for(int i = 1; i < n; i++)
+				{
+					String SQL = "INSERT INTO branches (branchid, branchname, balance, address) "+
+							"VALUES ("+i+",'bcerabcerabcerabcer',0,'bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabr');";
+					sTime = System.nanoTime();
+					stmt = con.createStatement();
+			        int v = stmt.executeUpdate(SQL);
+			        //rs.close();
+			        stmt.close();
+	
+					eTime = System.nanoTime();
+					time += eTime - sTime;
+				}
 				sTime = System.nanoTime();
-				stmt = con.createStatement();
-		        int v = stmt.executeUpdate(SQL);
-		        //rs.close();
-		        stmt.close();
+				con.commit();
 				eTime = System.nanoTime();
 				time += eTime - sTime;
+				for(int i = 1; i < n*100000; i++)
+				{
+					String SQL = "INSERT INTO accounts (accid, name, balance, branchid, address) VALUES("+i+", 'abcabcabcabcbacbacb', 0, 1, 'bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcr');";
+					
+					sTime = System.nanoTime();
+					stmt = con.createStatement();
+					int v = stmt.executeUpdate(SQL);
+					stmt.close();
+	
+					eTime = System.nanoTime();
+					time += eTime - sTime;
+				}
+				sTime = System.nanoTime();
+				con.commit();
+				eTime = System.nanoTime();
+				time += eTime - sTime;
+				for(int i = 1; i < n*10; i++)
+				{
+					String SQL = "INSERT INTO tellers (tellerid, tellername, balance, branchid, address) VALUES("+i+",'abcbaccbaacbbcaabca', 0, 1, 'bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcr');";
+					
+					sTime = System.nanoTime();
+					stmt = con.createStatement();
+			        int v = stmt.executeUpdate(SQL);
+			        //rs.close();
+			        stmt.close();
+					eTime = System.nanoTime();
+					time += eTime - sTime;
+				}
+				sTime = System.nanoTime();
+				con.commit();
+				eTime = System.nanoTime();
+				time += eTime - sTime;
+				System.out.print("fertig");
+				System.out.println("Zeit[ms] bei n: + "+n+": "+ time / (float)1000000);
 			}
-			sTime = System.nanoTime();
-			con.commit();
-			eTime = System.nanoTime();
-			time += eTime - sTime;
-			System.out.print("fertig");
 			
 		}
 		catch(Exception e){
@@ -95,13 +101,11 @@ public class P7A1a {
 			
 			if (con != null) 
 				try 
-				{
-					sTime = System.nanoTime(); 
+				{ 
 					con.close();
-					eTime = System.nanoTime();
-					time += eTime - sTime;
 				} catch(Exception e) {}
-			System.out.println("Zeit[ms]: "+ time / (float)1000000);
+			
 		}
+		
 	}
 }
