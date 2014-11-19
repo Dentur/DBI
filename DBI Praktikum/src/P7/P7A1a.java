@@ -34,6 +34,8 @@ public class P7A1a {
 			//TODO N 
 			int n = 10;
 			
+			con.setAutoCommit(false);
+			
 			for(int i = 1; i < n; i++)
 			{
 				String SQL = "INSERT INTO branches (branchid, branchname, balance, address) "+
@@ -47,6 +49,10 @@ public class P7A1a {
 				eTime = System.nanoTime();
 				time += eTime - sTime;
 			}
+			sTime = System.nanoTime();
+			con.commit();
+			eTime = System.nanoTime();
+			time += eTime - sTime;
 			for(int i = 1; i < n*100000; i++)
 			{
 				String SQL = "INSERT INTO accounts (accid, name, balance, branchid, address) VALUES("+i+", 'abcabcabcabcbacbacb', 0, 1, 'bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcr');";
@@ -59,6 +65,10 @@ public class P7A1a {
 				eTime = System.nanoTime();
 				time += eTime - sTime;
 			}
+			sTime = System.nanoTime();
+			con.commit();
+			eTime = System.nanoTime();
+			time += eTime - sTime;
 			for(int i = 1; i < n*10; i++)
 			{
 				String SQL = "INSERT INTO tellers (tellerid, tellername, balance, branchid, address) VALUES("+i+",'abcbaccbaacbbcaabca', 0, 1, 'bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcr');";
@@ -71,6 +81,10 @@ public class P7A1a {
 				eTime = System.nanoTime();
 				time += eTime - sTime;
 			}
+			sTime = System.nanoTime();
+			con.commit();
+			eTime = System.nanoTime();
+			time += eTime - sTime;
 			System.out.print("fertig");
 			
 		}
