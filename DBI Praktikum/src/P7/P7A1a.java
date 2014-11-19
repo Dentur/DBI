@@ -66,6 +66,7 @@ public class P7A1a {
 				}
 				sTime = System.nanoTime();
 				con.commit();
+				pst.close();
 				eTime = System.nanoTime();
 				time += eTime - sTime;
 				
@@ -98,6 +99,7 @@ public class P7A1a {
 				}
 				sTime = System.nanoTime();
 				con.commit();
+				pst.close();
 				eTime = System.nanoTime();
 				time += eTime - sTime;
 				
@@ -130,6 +132,7 @@ public class P7A1a {
 				}
 				sTime = System.nanoTime();
 				con.commit();
+				pst.close();
 				eTime = System.nanoTime();
 				time += eTime - sTime;
 				System.out.print("fertig");
