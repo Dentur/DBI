@@ -3,11 +3,13 @@ package P7;
 import java.sql.*;
 
 public class P7A1a {
-	public static long time;
-	public static long sTime, eTime;
+	public static long time, time2;
+	public static long sTime, eTime,sTime2, eTime2;
 	public static void main(String[] args)
 	{
 		time = 0;
+		time2=0;
+		sTime2 = System.nanoTime();
 		//Create connection string
 		String connectionURL = "jdbc:sqlserver://localhost:1433;"
 		+ "databaseName=BenchmarkDB;user=test;password=123";
@@ -60,7 +62,16 @@ public class P7A1a {
 					pst.setInt(3,0);
 					pst.setString(4, "bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabr");
 					pst.addBatch();
+					if((i % 1000) == 0)
+					{
+						sTime = System.nanoTime();
+						pst.executeBatch();
+						eTime = System.nanoTime();
+						time += eTime - sTime;
+					}
+						
 				}
+				System.out.print("branches fertig \n");
 				sTime = System.nanoTime();
 				pst.executeBatch();
 				con.commit();
@@ -91,7 +102,15 @@ public class P7A1a {
 					pst.setInt(4, 1);
 					pst.setString(5, "bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcr");
 					pst.addBatch();
+					if((i % 1000) == 0)
+					{
+						sTime = System.nanoTime();
+						pst.executeBatch();
+						eTime = System.nanoTime();
+						time += eTime - sTime;
+					}
 				}
+				System.out.print("accounts fertig \n");
 				sTime = System.nanoTime();
 				pst.executeBatch();
 				con.commit();
@@ -122,7 +141,15 @@ public class P7A1a {
 					pst.setInt(4, 1);
 					pst.setString(5, "bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcr");
 					pst.addBatch();
+					if((i % 1000) == 0)
+					{
+						sTime = System.nanoTime();
+						pst.executeBatch();
+						eTime = System.nanoTime();
+						time += eTime - sTime;
+					}
 				}
+				System.out.print("tellers fertig \n");
 				sTime = System.nanoTime();
 				pst.executeBatch();
 				con.commit();
@@ -131,6 +158,8 @@ public class P7A1a {
 				time += eTime - sTime;
 				System.out.print("fertig");
 				System.out.println("Zeit[ms] bei n: + "+n+": "+ time / (float)1000000);
+				eTime2 = System.nanoTime();
+				System.out.println("Zeit[ms] gesanntProgramm bei n: + "+n+": "+ (sTime2 - eTime2) / (float)1000000);
 			}
 			
 		}
@@ -144,6 +173,7 @@ public class P7A1a {
 				{ 
 					con.close();
 				} catch(Exception e) {}
+			
 			
 		}
 		
