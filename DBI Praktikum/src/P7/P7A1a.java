@@ -32,10 +32,11 @@ public class P7A1a {
 			
 			
 			//TODO N 
-			int ns[] = {2, 3, 4};
-			//int ns[] = {10, 20, 50};
-			for(int index = 0; index < 1; index++)
+			//int ns[] = {1, 3, 4};
+			int ns[] = {10, 20, 50};
+			for(int index = 0; index < 3; index++)
 			{
+				sTime2 = System.nanoTime();
 				String SQLL = "DELETE FROM tellers;DELETE FROM accounts;DELETE FROM branches;";
 				Statement st = con.createStatement();
 				int l = st.executeUpdate(SQLL);
@@ -51,7 +52,7 @@ public class P7A1a {
 						"VALUES (?,?,?,?);");
 				eTime = System.nanoTime();
 				time += eTime - sTime;
-				for(int i = 1; i < n; i++)
+				for(int i = 0; i < n; i++)
 				{
 					//String SQL = "INSERT INTO branches (branchid, branchname, balance, address) "+
 							//"VALUES ("+i+",'bcerabcerabcerabcer',0,'bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabr');";
@@ -84,7 +85,7 @@ public class P7A1a {
 						"VALUES (?,?,?,?,?);");
 				eTime = System.nanoTime();
 				time += eTime - sTime;
-				for(int i = 1; i < n*100000; i++)
+				for(int i = 0; i < n*100000; i++)
 				{
 					/*String SQL = "INSERT INTO accounts (accid, name, balance, branchid, address) VALUES"+
 					 ("+i+", 'abcabcabcabcbacbacb', 0, 1, 'bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcr');";
@@ -99,7 +100,7 @@ public class P7A1a {
 					pst.setInt(1, i);
 					pst.setString(2,"abcabcabcabcbacbacb");
 					pst.setInt(3,0);
-					pst.setInt(4, 1);
+					pst.setInt(4, 0);
 					pst.setString(5, "bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcr");
 					pst.addBatch();
 					if((i % 1000) == 0)
@@ -123,7 +124,7 @@ public class P7A1a {
 						"VALUES (?,?,?,?,?);");
 				eTime = System.nanoTime();
 				time += eTime - sTime;
-				for(int i = 1; i < n*10; i++)
+				for(int i = 0; i < n*10; i++)
 				{
 					/*String SQL = "INSERT INTO tellers (tellerid, tellername, balance, branchid, address) "+
 					 * "VALUES("+i+",'abcbaccbaacbbcaabca', 0, 1, 'bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcr');";
@@ -138,7 +139,7 @@ public class P7A1a {
 					pst.setInt(1, i);
 					pst.setString(2,"abcbaccbaacbbcaabca");
 					pst.setInt(3,0);
-					pst.setInt(4, 1);
+					pst.setInt(4, 0);
 					pst.setString(5, "bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcr");
 					pst.addBatch();
 					if((i % 1000) == 0)
