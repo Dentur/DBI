@@ -5,6 +5,7 @@ import java.sql.*;
 public class P7A1a {
 	public static long time, time2;
 	public static long sTime, eTime,sTime2, eTime2;
+	public static int batchSize = 1000;
 	public static void main(String[] args)
 	{
 		time = 0;
@@ -32,19 +33,20 @@ public class P7A1a {
 			
 			
 			//TODO N 
-			//int ns[] = {1, 3, 4};
-			int ns[] = {10, 20, 50};
-			for(int index = 0; index < 3; index++)
+			int ns[] = {10, 3, 4};
+			//int ns[] = {10, 20, 50};
+			for(int index = 0; index < 1; index++)
 			{
-				sTime2 = System.nanoTime();
+				
 				String SQLL = "DELETE FROM tellers;DELETE FROM accounts;DELETE FROM branches;";
+				
 				Statement st = con.createStatement();
 				int l = st.executeUpdate(SQLL);
 				st.close();
 				
 				int n = ns[index];
 				time = 0;
-				
+				sTime2 = System.nanoTime();
 				con.setAutoCommit(false);
 				
 				sTime = System.nanoTime();
@@ -63,7 +65,7 @@ public class P7A1a {
 					pst.setInt(3,0);
 					pst.setString(4, "bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabr");
 					pst.addBatch();
-					if((i % 1000) == 0)
+					if((i % batchSize) == 0)
 					{
 						sTime = System.nanoTime();
 						pst.executeBatch();
@@ -103,7 +105,7 @@ public class P7A1a {
 					pst.setInt(4, 0);
 					pst.setString(5, "bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcr");
 					pst.addBatch();
-					if((i % 1000) == 0)
+					if((i % batchSize) == 0)
 					{
 						sTime = System.nanoTime();
 						pst.executeBatch();
@@ -142,7 +144,7 @@ public class P7A1a {
 					pst.setInt(4, 0);
 					pst.setString(5, "bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcr");
 					pst.addBatch();
-					if((i % 1000) == 0)
+					if((i % batchSize) == 0)
 					{
 						sTime = System.nanoTime();
 						pst.executeBatch();
