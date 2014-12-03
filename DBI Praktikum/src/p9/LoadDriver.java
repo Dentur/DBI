@@ -5,7 +5,7 @@ package p9;
 import java.sql.*;
 import java.util.Random;
 
-public class LoadDriver {
+public class LoadDriver extends Thread {
 	long warmupTime;
 	long lagTime;
 	long measureTime;
@@ -14,6 +14,7 @@ public class LoadDriver {
 	int verKonto;
 	int verEinzahlung;
 	int verAnalyse;
+	
 	
 	Connection connection;
 	
@@ -32,14 +33,14 @@ public class LoadDriver {
 	 */
 	public LoadDriver(String conString, long warmupT, long lagT, long measureT, long cooldownT, int verKonto, int verEinzahlung, int verAnalyse ) throws SQLException
 	{
-		try
+		/*try
 		{
 			connection = DriverManager.getConnection(conString);
 		}
 		catch(SQLException e)
 		{
 			throw e;
-		}
+		}*/
 		
 		if(warmupT >= 0)
 			warmupTime = warmupT;
@@ -80,14 +81,17 @@ public class LoadDriver {
 	/*
 	 * Starts the Insertloop
 	 */
-	public long start()
+	public void run()
 	{
-		long anzahl = 0, runtime = 0, startTime, tempTime;
+
+		System.out.println("LoadDriver Started");
+		long runtime = 0, startTime, tempTime;
 		int phase = 0;//0 = warmup; 1 = measure; 3 = cooldown;
 		boolean run = true;
 		startTime = System.nanoTime();
 		Random rand = new Random();
 		int auswahl;
+		actions = 0;
 		while(run)
 		{
 			tempTime = System.nanoTime();
@@ -126,18 +130,16 @@ public class LoadDriver {
 			
 			
 			if(phase == 1)
-				anzahl++;
+				actions++;
 			
 			
 			try {
-				wait(lagTime);
+				sleep(lagTime);
 			} catch (InterruptedException e) {
 				//Interupt exeption
 				//mache erstmal nichts
 			}
 		}
-		
-		return anzahl;
 	}
 
 }
