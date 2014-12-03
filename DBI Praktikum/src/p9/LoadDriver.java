@@ -139,5 +139,25 @@ public class LoadDriver {
 		
 		return anzahl;
 	}
+	
+	public double kontostand_tx(Connection cn ,int kd_id)
+	{
+		Statement st = null;
+		ResultSet rs = null;
+		st = cn.createStatement();
+		rs = st.executeQuery("SELECT balance FROM accounts WHERE accid = " + kd_id);
+		return rs.getDouble(0);
+	}
+	
+	public double einzahlung_tx(Connection cn, int kd_id, int tl_id, int br_id, double delta)
+	{
+		Statement st = null;
+		ResultSet rs = null;
+		
+		st = cn.createStatement();
+		rs = st.executeUpdate("UPDATE branches SET balance = balance + " + delta + " WHERE branchid = " + br_id);
+		
+		return rs.getDouble(0);
+	}
 
 }
