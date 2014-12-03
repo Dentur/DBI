@@ -141,5 +141,65 @@ public class LoadDriver extends Thread {
 			}
 		}
 	}
+	
+	public double kontostand_tx(Connection cn ,int kd_id)
+	{
+		Statement st = null;
+		ResultSet rs = null;
+		double erg = 0;
+		try {
+			st = cn.createStatement();
+			rs = st.executeQuery("SELECT balance FROM accounts WHERE accid = " + kd_id + ";");
+			erg = rs.getDouble(0);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return erg;
+	}
+	
+	public double einzahlung_tx(Connection cn, int kd_id, int tl_id, int br_id, double delta, String comment)
+	{
+		Statement st = null;
+		ResultSet rs = null;
+		double erg = 0;
+		try {
+			st = cn.createStatement();
+			st.executeUpdate("UPDATE branches SET balance = balance + " + delta + " WHERE branchid = " + br_id + ";");
+			
+			st.executeUpdate("UPDATE tellers SET balance = balance + " + delta + " WHERE tellerid = " + tl_id + ";");
+			
+			st.executeUpdate("UPDATE accounts SET balance = balance + " + delta + " WHERE accid = " + kd_id + ";");
+			
+			rs = st.executeQuery("SELECT balance FROM accounts WHERE accid = " + kd_id + ";");
+			st.executeQuery("INSERT INTO history (accid, tellerid, delta, branchid, accbalance, cmmnt) VALUES ("+ kd_id + "," + tl_id + "," + delta + "," + br_id + "," + rs.getDouble(0) + "," + comment + ");");
+			rs.close();
+			
+			erg = rs.getDouble(0);
+			rs.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return erg;
+	}
 
+	public int analyse_tx(Connection cn, double delta)
+	{
+		Statement st = null;
+		ResultSet rs = null;
+		int anz = 0;
+		try {
+			st = cn.createStatement();
+			rs = st.executeQuery("SELECT COUNT(delta) AS Anzahl FROM history WHERE delta = " + delta + ";");
+			anz = rs.getInt(0);
+			rs.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return anz;
+	}
 }
