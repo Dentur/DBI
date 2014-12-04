@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 public class Manager {
 	//Parameter
-	int AnzahlLoadDriver = 2;
+	int AnzahlLoadDriver = 20;
 	String VerbindungsaufbauString = "jdbc:sqlserver://localhost:1433; databaseName=BenchmarkDB;user=test;password=123";
 	long warmupTime = 240*1000;
 	long measureTime = 300*1000;
@@ -28,7 +28,7 @@ public class Manager {
 		for(int i = 0; i < AnzahlLoadDriver; i++)
 		{
 			try {
-				drivers[i] = new LoadDriver(VerbindungsaufbauString, warmupTime, thinkTime, measureTime, cooldownTime, verteilungKontoStatement, this.verteilungEinzahlungsStatement, this.verteilungAnalyseStatement );
+				drivers[i] = new LoadDriver(VerbindungsaufbauString, warmupTime, thinkTime, measureTime, cooldownTime, verteilungKontoStatement, this.verteilungEinzahlungsStatement, this.verteilungAnalyseStatement, i );
 				drivers[i].start();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block

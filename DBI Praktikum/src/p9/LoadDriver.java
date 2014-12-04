@@ -15,7 +15,7 @@ public class LoadDriver extends Thread {
 	int verEinzahlung;
 	int verAnalyse;
 	
-	
+	int threadNr;
 	Connection connection;
 	
 	public long actions;
@@ -31,8 +31,9 @@ public class LoadDriver extends Thread {
 	 * @param verAnalyse Wahrscheinlichkeit das ein AnalyseStatement ausgewählt wird (verAnalyse in 100)
 	 * @throws SQLException
 	 */
-	public LoadDriver(String conString, long warmupT, long lagT, long measureT, long cooldownT, int verKonto, int verEinzahlung, int verAnalyse ) throws SQLException
+	public LoadDriver(String conString, long warmupT, long lagT, long measureT, long cooldownT, int verKonto, int verEinzahlung, int verAnalyse, int threadNr ) throws SQLException
 	{
+	this.threadNr = threadNr;	
 		/*try
 		{
 			connection = DriverManager.getConnection(conString);
@@ -94,6 +95,7 @@ public class LoadDriver extends Thread {
 		actions = 0;
 		while(run)
 		{
+			System.out.println(this.threadNr);
 			tempTime = System.nanoTime();
 			runtime = (long) ((tempTime - startTime)/(float)1000000);
 			if(runtime < warmupTime)
@@ -117,15 +119,15 @@ public class LoadDriver extends Thread {
 			auswahl = rand.nextInt(100) +1;
 			if( auswahl <= verKonto)
 			{
-				System.out.println("Konto");
+				//System.out.println("Konto");
 			}
 			else if((auswahl > verKonto) && (auswahl < (verKonto + verEinzahlung)) )
 			{
-				System.out.println("Einzahlung");
+				//System.out.println("Einzahlung");
 			}
 			else if(auswahl > (verKonto + verEinzahlung) && (auswahl < (verKonto + verEinzahlung + verAnalyse))) 
 			{
-				System.out.println("Analyse");
+				//System.out.println("Analyse");
 			}
 			
 			
