@@ -22,7 +22,7 @@ public class Manager {
 	
 	public Manager()
 	{
-		if(true)
+		if(false)
 		{
 			warmupTime = 1000;
 			measureTime = 6*warmupTime;
