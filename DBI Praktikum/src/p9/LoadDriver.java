@@ -151,11 +151,11 @@ public class LoadDriver extends Thread {
 		return erg;
 	}
 	
-	public double einzahlung_tx(Connection cn, int kd_id, int tl_id, int br_id, int delta)
+	public int einzahlung_tx(Connection cn, int kd_id, int tl_id, int br_id, int delta)
 	{
 		Statement st = null;
 		ResultSet rs = null;
-		double erg = 0;
+		int erg = 0;
 		try {
 			st = cn.createStatement();
 			st.executeUpdate("UPDATE branches SET balance = balance + " + delta + " WHERE branchid = " + br_id + ";");
@@ -165,7 +165,7 @@ public class LoadDriver extends Thread {
 			st.executeUpdate("UPDATE accounts SET balance = balance + " + delta + " WHERE accid = " + kd_id + ";");
 			
 			rs = st.executeQuery("SELECT balance FROM accounts WHERE accid = " + kd_id + ";");
-			st.executeQuery("INSERT INTO history (accid, tellerid, delta, branchid, accbalance) VALUES ("+ kd_id + "," + tl_id + "," + delta + "," + br_id + "," + rs.getDouble(0) + ");");
+			st.executeQuery("INSERT INTO history (accid, tellerid, delta, branchid, accbalance) VALUES ("+ kd_id + "," + tl_id + "," + delta + "," + br_id + "," + rs.getInt(1) + ");");
 			
 			erg = rs.getInt(1);
 			rs.close();
