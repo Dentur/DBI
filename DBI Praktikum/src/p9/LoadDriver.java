@@ -110,7 +110,7 @@ public class LoadDriver extends Thread {
 			else if((auswahl > verKonto) && (auswahl < (verKonto + verEinzahlung)) )
 			{
 				//System.out.println("einzahlung");
-				//this.einzahlung_tx(connection, rand.nextInt(10000000), rand.nextInt(1000), rand.nextInt(100), rand.nextInt());
+				this.einzahlung_tx(connection, rand.nextInt(10000000), rand.nextInt(1000), rand.nextInt(100), rand.nextInt());
 			}
 			else if(auswahl > (verKonto + verEinzahlung) && (auswahl < (verKonto + verEinzahlung + verAnalyse))) 
 			{
@@ -159,7 +159,7 @@ public class LoadDriver extends Thread {
 		int erg = 0;
 		try {
 			st = cn.createStatement();
-			st.executeQuery("SELECT balance FROM branches WHERE branchid = " + br_id + ";");
+			rs = st.executeQuery("SELECT balance FROM branches WHERE branchid = " + br_id + ";");
 			rs.next();
 			delta = delta + rs.getInt(1);
 			st.executeUpdate("UPDATE branches SET balance = " + delta + " WHERE branchid = " + br_id + ";");
@@ -168,16 +168,17 @@ public class LoadDriver extends Thread {
 			
 			st.executeUpdate("UPDATE accounts SET balance = " + delta + " WHERE accid = " + kd_id + ";");
 			rs.close();
-			rs = st.executeQuery("SELECT balance FROM accounts WHERE accid = " + kd_id + ";");
-			rs.next();
-			st.executeQuery("INSERT INTO history (accid, tellerid, delta, branchid, accbalance) VALUES ("+ kd_id + "," + tl_id + "," + delta + "," + br_id + "," + rs.getInt(1) + ");");
+			ResultSet rss = st.executeQuery("SELECT balance FROM accounts WHERE accid = " + kd_id + ";");
+			rss.next();
+
+			erg = rss.getInt(1);
+			st.executeUpdate("INSERT INTO history (accid, tellerid, delta, branchid, accbalance, cmmnt) VALUES ("+ kd_id + "," + tl_id + "," + delta + "," + br_id + "," + erg + ", + 'abcdeabcdeabcdeabcdeabcdeabcd');");
 			
-			erg = rs.getInt(1);
-			rs.close();
+			//rss.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			System.out.println("einzahlung");
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		
 		return erg;
