@@ -49,7 +49,7 @@ public class Manager {
 		for(int i = 0; i < AnzahlLoadDriver; i++)
 		{
 			try {
-				drivers[i] = new LoadDriver(VerbindungsaufbauString, warmupTime, thinkTime, measureTime, cooldownTime, verteilungKontoStatement, this.verteilungEinzahlungsStatement, this.verteilungAnalyseStatement, i );
+				drivers[i] = new LoadDriver(VerbindungsaufbauString, thinkTime, verteilungKontoStatement, this.verteilungEinzahlungsStatement, this.verteilungAnalyseStatement, i );
 				drivers[i].start();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
