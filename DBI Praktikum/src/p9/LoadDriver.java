@@ -5,6 +5,11 @@ package p9;
 import java.sql.*;
 import java.util.Random;
 
+/**
+ * Apllies load to a SQL Server
+ * @author Sebastian Venhuis
+ *
+ */
 public class LoadDriver extends Thread {
 	long warmupTime;
 	long lagTime;
@@ -27,8 +32,14 @@ public class LoadDriver extends Thread {
 	PreparedStatement pstEinzAccBalance;
 	PreparedStatement pstEinzInsHistory;
 	
+	/**
+	 * The phase of the loadDriver
+	 */
 	public int phase;
 	
+	/**
+	 * The actions the Loaddriver has exequted
+	 */
 	public long actions;
 	/**
 	 * 
@@ -42,7 +53,7 @@ public class LoadDriver extends Thread {
 	 * @param verAnalyse Wahrscheinlichkeit das ein AnalyseStatement ausgewählt wird (verAnalyse in 100)
 	 * @throws SQLException
 	 */
-	public LoadDriver(String conString, long warmupT, long lagT, long measureT, long cooldownT, int verKonto, int verEinzahlung, int verAnalyse, int threadNr ) throws SQLException
+	public LoadDriver(String conString, long lagT, int verKonto, int verEinzahlung, int verAnalyse, int threadNr ) throws SQLException
 	{
 	this.threadNr = threadNr;	
 		try
@@ -64,6 +75,7 @@ public class LoadDriver extends Thread {
 			throw e;
 		}
 		
+		//Set all parameters
 		if(warmupT >= 0)
 			warmupTime = warmupT;
 		else
@@ -100,8 +112,9 @@ public class LoadDriver extends Thread {
 			this.verAnalyse = 0;
 	}
 	
-	/*
-	 * Starts the Insertloop
+	/**
+	 * Starts the Execution of the Loaddriver
+	 * To Call use thread.start()
 	 */
 	public void run()
 	{
@@ -116,6 +129,7 @@ public class LoadDriver extends Thread {
 		actions = 0;
 		while(run)
 		{
+			//Beende wenn die endphase erreicht wurde
 			if(phase == 3)
 				run = false;
 			//Statement absetzen
@@ -160,7 +174,12 @@ public class LoadDriver extends Thread {
 		}
 		System.out.println("Thread finished with : " + actions +" Querys");
 	}
-	
+	/**
+	 * Get the balance of a account
+	 * @param cn the Connnection to the Database
+	 * @param kd_id the id of the account
+	 * @return the balance of the selected account
+	 */
 	public int kontostand_tx(Connection cn ,int kd_id)
 	{
 		Statement st = null;
@@ -180,6 +199,15 @@ public class LoadDriver extends Thread {
 		return erg;
 	}
 	
+	/**
+	 * Übt die einzahlung aus
+	 * @param cn Die Verbindung zu der Datenbank
+	 * @param kd_id Der Kunde der Geld einzahlt
+	 * @param tl_id	Der Bankautomat an dem einbezahlt wird
+	 * @param br_id Die Fiale in der Einbezahlt wurde
+	 * @param delta	Der geldbetrag der eingezahlt wurde
+	 * @return Der neue Geldbetrag von dem Kunden
+	 */
 	public int einzahlung_tx(Connection cn, int kd_id, int tl_id, int br_id, int delta)
 	{
 		Statement st = null;
@@ -233,6 +261,11 @@ public class LoadDriver extends Thread {
 		return erg;
 	}
 
+	/**
+	 * Gibt die anzahl der einzahlungen von einem bestimten überweisungsbetrag an
+	 * @param cn Die Verbinduung zum Server
+	 * @param delta Der gewünschte Geldbetrag
+	 */
 	public int analyse_tx(Connection cn, int delta)
 	{
 		Statement st = null;
