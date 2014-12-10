@@ -18,6 +18,8 @@ public class LoadDriver extends Thread {
 	int threadNr;
 	Connection connection;
 	
+	public int phase;
+	
 	public long actions;
 	/**
 	 * 
@@ -87,7 +89,7 @@ public class LoadDriver extends Thread {
 
 		System.out.println("LoadDriver Started");
 		long runtime = 0, startTime, tempTime;
-		int phase = 0;//0 = warmup; 1 = measure; 3 = cooldown;
+		phase = 0;//0 = warmup; 1 = measure; 2 = cooldown; 3 = Beenden
 		boolean run = true;
 		startTime = System.nanoTime();
 		Random rand = new Random();
@@ -95,39 +97,23 @@ public class LoadDriver extends Thread {
 		actions = 0;
 		while(run)
 		{
-			System.out.println(this.threadNr);
-			tempTime = System.nanoTime();
-			runtime = (long) ((tempTime - startTime)/(float)1000000);
-			if(runtime < warmupTime)
-			{
-				phase = 0;
-			}
-			else if(runtime > measureTime + warmupTime)
-			{
-				phase = 2;
-			}
-			else if(runtime > (measureTime + warmupTime + cooldownTime))
-			{
+			if(phase == 3)
 				run = false;
-			}
-			else
-			{
-				phase = 1;
-			}
-			
 			//Statement absetzen
 			auswahl = rand.nextInt(100) +1;
 			if( auswahl <= verKonto)
 			{
 				//System.out.println("Konto");
+				this.kontostand_tx(connection, rand.nextInt(10000000));
 			}
 			else if((auswahl > verKonto) && (auswahl < (verKonto + verEinzahlung)) )
 			{
-				//System.out.println("Einzahlung");
+				this.einzahlung_tx(connection, rand.nextInt(10000000), rand.nextInt(1000), rand.nextInt(100), rand.nextDouble());
 			}
 			else if(auswahl > (verKonto + verEinzahlung) && (auswahl < (verKonto + verEinzahlung + verAnalyse))) 
 			{
 				//System.out.println("Analyse");
+				this.analyse_tx(connection, rand.nextDouble());
 			}
 			
 			
@@ -142,6 +128,7 @@ public class LoadDriver extends Thread {
 				//mache erstmal nichts
 			}
 		}
+		System.out.println("Thread finished with : " + actions +" Querys");
 	}
 	
 	public double kontostand_tx(Connection cn ,int kd_id)
@@ -161,7 +148,7 @@ public class LoadDriver extends Thread {
 		return erg;
 	}
 	
-	public double einzahlung_tx(Connection cn, int kd_id, int tl_id, int br_id, double delta, String comment)
+	public double einzahlung_tx(Connection cn, int kd_id, int tl_id, int br_id, double delta)
 	{
 		Statement st = null;
 		ResultSet rs = null;
@@ -175,7 +162,7 @@ public class LoadDriver extends Thread {
 			st.executeUpdate("UPDATE accounts SET balance = balance + " + delta + " WHERE accid = " + kd_id + ";");
 			
 			rs = st.executeQuery("SELECT balance FROM accounts WHERE accid = " + kd_id + ";");
-			st.executeQuery("INSERT INTO history (accid, tellerid, delta, branchid, accbalance, cmmnt) VALUES ("+ kd_id + "," + tl_id + "," + delta + "," + br_id + "," + rs.getDouble(0) + "," + comment + ");");
+			st.executeQuery("INSERT INTO history (accid, tellerid, delta, branchid, accbalance) VALUES ("+ kd_id + "," + tl_id + "," + delta + "," + br_id + "," + rs.getDouble(0) + ");");
 			rs.close();
 			
 			erg = rs.getDouble(0);

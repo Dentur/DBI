@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 public class Manager {
 	//Parameter
-	int AnzahlLoadDriver = 20;
+	int AnzahlLoadDriver = 5;
 	String VerbindungsaufbauString = "jdbc:sqlserver://localhost:1433; databaseName=BenchmarkDB;user=test;password=123";
 	long warmupTime = 240*1000;
 	long measureTime = 300*1000;
@@ -18,7 +18,12 @@ public class Manager {
 	
 	public Manager()
 	{
-		
+		if(true)
+		{
+			warmupTime = 1000;
+			measureTime = 6*warmupTime;
+			cooldownTime = warmupTime;
+		}
 	}
 	
 	public void createLoadDriver()
@@ -35,5 +40,30 @@ public class Manager {
 				e.printStackTrace();
 			} 
 		}
+		try {
+			
+			Thread.sleep(warmupTime);
+			System.out.println("Warmup Finished");
+			for(int i = 0; i < AnzahlLoadDriver; i++)
+			{
+				drivers[i].phase = 1;
+			}
+			Thread.sleep(this.measureTime);
+			System.out.println("MeasureTime Finished");
+			for(int i = 0; i < AnzahlLoadDriver; i++)
+			{
+				drivers[i].phase = 2;
+			}
+			Thread.sleep(this.cooldownTime);
+			System.out.println("Cooldown Finished");
+			for(int i = 0; i < AnzahlLoadDriver; i++)
+			{
+				drivers[i].phase = 3;
+			}
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 }
