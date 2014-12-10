@@ -46,7 +46,7 @@ public class P7A1a {
 				for(int i = 0; i < n; i++)
 				{
 					//Setze Werte
-					pst.setInt(1, i);//Branchid
+					pst.setInt(1, i+1);//Branchid
 					pst.setString(2,"bcerabcerabcerabcer");//Branchname
 					pst.setInt(3,0);//balance
 					pst.setString(4, "bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabr");//address
@@ -72,10 +72,10 @@ public class P7A1a {
 				for(int i = 0; i < n*100000; i++)
 				{
 					//Setze Werte
-					pst.setInt(1, i);//accid
+					pst.setInt(1, i+1);//accid
 					pst.setString(2,"abcabcabcabcbacbacb");//name
 					pst.setInt(3,0);//balance
-					pst.setInt(4, rand.nextInt(n));//branchid
+					pst.setInt(4, rand.nextInt(n)+1);//branchid
 					pst.setString(5, "bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcr");//address
 					//Füge das Tupel dem Batch hinzu
 					pst.addBatch();
@@ -97,10 +97,10 @@ public class P7A1a {
 				for(int i = 0; i < n*10; i++)
 				{
 					//Setze Werte
-					pst.setInt(1, i);//Tellerid
+					pst.setInt(1, i+1);//Tellerid
 					pst.setString(2,"abcbaccbaacbbcaabca");//tellername
 					pst.setInt(3,0);//balance
-					pst.setInt(4, rand.nextInt(n));//branchid
+					pst.setInt(4, rand.nextInt(n)+1);//branchid
 					pst.setString(5, "bcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcerabcr");//address
 					//Füge das Tupel dem Batch hinzu
 					pst.addBatch();
