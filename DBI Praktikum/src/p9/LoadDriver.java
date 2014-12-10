@@ -36,14 +36,14 @@ public class LoadDriver extends Thread {
 	public LoadDriver(String conString, long warmupT, long lagT, long measureT, long cooldownT, int verKonto, int verEinzahlung, int verAnalyse, int threadNr ) throws SQLException
 	{
 	this.threadNr = threadNr;	
-		/*try
+		try
 		{
 			connection = DriverManager.getConnection(conString);
 		}
 		catch(SQLException e)
 		{
 			throw e;
-		}*/
+		}
 		
 		if(warmupT >= 0)
 			warmupTime = warmupT;

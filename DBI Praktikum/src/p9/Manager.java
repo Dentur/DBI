@@ -20,9 +20,9 @@ public class Manager {
 	{
 		if(true)
 		{
-			warmupTime = 1000;
-			measureTime = 6*warmupTime;
-			cooldownTime = warmupTime;
+			//warmupTime = 1000;
+			//measureTime = 6*warmupTime;
+			//cooldownTime = warmupTime;
 		}
 	}
 	
