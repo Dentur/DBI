@@ -24,8 +24,8 @@ public class P7A1a {
 			//Verbiindung mit dem Server herstellen
 			con = DriverManager.getConnection(connectionURL);
 			
-			int ns[] = {10, 20, 50};
-			for(int index = 0; index < 3; index++)
+			int ns[] = {100, 20, 50};
+			for(int index = 0; index < 1; index++)
 			{
 				//Alte Datensätze löschen
 				String SQLL = "DELETE FROM tellers;DELETE FROM accounts;DELETE FROM branches;";
