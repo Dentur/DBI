@@ -1,6 +1,9 @@
 package p9;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Manager {
 	//Parameter
@@ -15,15 +18,27 @@ public class Manager {
 	int verteilungAnalyseStatement = 15;
 	//Variablen
 	LoadDriver[] drivers;
+	Connection connection;
 	
 	public Manager()
 	{
-		if(true)
+		if(false)
 		{
-			//warmupTime = 1000;
-			//measureTime = 6*warmupTime;
-			//cooldownTime = warmupTime;
+			warmupTime = 1000;
+			measureTime = 6*warmupTime;
+			cooldownTime = warmupTime;
 		}
+		try
+		{
+			connection = DriverManager.getConnection(VerbindungsaufbauString);
+			Statement st = connection.createStatement();
+			st.executeUpdate("Delete From History;");
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public void createLoadDriver()

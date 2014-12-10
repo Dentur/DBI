@@ -39,6 +39,7 @@ public class LoadDriver extends Thread {
 		try
 		{
 			connection = DriverManager.getConnection(conString);
+			connection.setTransactionIsolation(connection.TRANSACTION_SERIALIZABLE);
 		}
 		catch(SQLException e)
 		{
