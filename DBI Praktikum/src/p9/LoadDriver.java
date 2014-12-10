@@ -141,7 +141,7 @@ public class LoadDriver extends Thread {
 		try {
 			st = cn.createStatement();
 			rs = st.executeQuery("SELECT balance FROM accounts WHERE accid = " + kd_id + ";");
-			erg = rs.getInt(0);
+			erg = rs.getInt(1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			System.out.println("konto");
@@ -167,7 +167,7 @@ public class LoadDriver extends Thread {
 			rs = st.executeQuery("SELECT balance FROM accounts WHERE accid = " + kd_id + ";");
 			st.executeQuery("INSERT INTO history (accid, tellerid, delta, branchid, accbalance) VALUES ("+ kd_id + "," + tl_id + "," + delta + "," + br_id + "," + rs.getDouble(0) + ");");
 			
-			erg = rs.getInt(0);
+			erg = rs.getInt(1);
 			rs.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -186,7 +186,7 @@ public class LoadDriver extends Thread {
 		try {
 			st = cn.createStatement();
 			rs = st.executeQuery("SELECT COUNT(delta) AS Anzahl FROM history WHERE delta = " + delta + ";");
-			anz = rs.getInt(0);
+			anz = rs.getInt(1);
 			rs.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
