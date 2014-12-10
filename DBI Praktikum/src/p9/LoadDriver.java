@@ -159,14 +159,17 @@ public class LoadDriver extends Thread {
 		int erg = 0;
 		try {
 			st = cn.createStatement();
-			st.executeUpdate("UPDATE branches SET balance = balance + " + delta + " WHERE branchid = " + br_id + ";");
+			st.executeQuery("SELECT balance FROM branches WHERE branchid = " + br_id + ";");
+			rs.next();
+			delta = delta + rs.getInt(1);
+			st.executeUpdate("UPDATE branches SET balance = " + delta + " WHERE branchid = " + br_id + ";");
 			
-			st.executeUpdate("UPDATE tellers SET balance = balance + " + delta + " WHERE tellerid = " + tl_id + ";");
+			st.executeUpdate("UPDATE tellers SET balance = " + delta + " WHERE tellerid = " + tl_id + ";");
 			
-			st.executeUpdate("UPDATE accounts SET balance = balance + " + delta + " WHERE accid = " + kd_id + ";");
-			
+			st.executeUpdate("UPDATE accounts SET balance = " + delta + " WHERE accid = " + kd_id + ";");
+			rs.close();
 			rs = st.executeQuery("SELECT balance FROM accounts WHERE accid = " + kd_id + ";");
-			//rs.first();
+			rs.next();
 			st.executeQuery("INSERT INTO history (accid, tellerid, delta, branchid, accbalance) VALUES ("+ kd_id + "," + tl_id + "," + delta + "," + br_id + "," + rs.getInt(1) + ");");
 			
 			erg = rs.getInt(1);
