@@ -43,6 +43,7 @@ public class Manager {
 	
 	public void createLoadDriver()
 	{
+		int Anzahl;
 		drivers = new LoadDriver[AnzahlLoadDriver];
 		System.out.println("Starte Unterprogramme:");
 		for(int i = 0; i < AnzahlLoadDriver; i++)
@@ -71,10 +72,13 @@ public class Manager {
 			}
 			Thread.sleep(this.cooldownTime);
 			System.out.println("Cooldown Finished");
+			Anzahl = 0;
 			for(int i = 0; i < AnzahlLoadDriver; i++)
 			{
+				Anzahl += drivers[i].actions;
 				drivers[i].phase = 3;
 			}
+			System.out.println("tps: " + (Anzahl / this.measureTime));
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
