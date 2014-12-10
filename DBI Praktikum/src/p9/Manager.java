@@ -22,7 +22,7 @@ public class Manager {
 	
 	public Manager()
 	{
-		if(false)
+		if(true)
 		{
 			warmupTime = 1000;
 			measureTime = 6*warmupTime;
@@ -78,7 +78,9 @@ public class Manager {
 				Anzahl += drivers[i].actions;
 				drivers[i].phase = 3;
 			}
-			System.out.println("tps: " + (Anzahl / this.measureTime));
+			System.out.println(Anzahl);
+			float tps = (float)Anzahl / (this.measureTime/1000);
+			System.out.println("tps: " + tps);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

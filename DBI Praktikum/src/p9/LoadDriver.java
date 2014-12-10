@@ -40,6 +40,7 @@ public class LoadDriver extends Thread {
 		{
 			connection = DriverManager.getConnection(conString);
 			connection.setTransactionIsolation(connection.TRANSACTION_SERIALIZABLE);
+			connection.setAutoCommit(false);
 		}
 		catch(SQLException e)
 		{
@@ -93,7 +94,7 @@ public class LoadDriver extends Thread {
 		phase = 0;//0 = warmup; 1 = measure; 2 = cooldown; 3 = Beenden
 		boolean run = true;
 		startTime = System.nanoTime();
-		Random rand = new Random();
+		Random rand = new Random((long)this.threadNr);
 		int auswahl;
 		actions = 0;
 		while(run)
@@ -102,22 +103,32 @@ public class LoadDriver extends Thread {
 				run = false;
 			//Statement absetzen
 			auswahl = rand.nextInt(100) +1;
-			if( auswahl <= verKonto)
+			try
 			{
-				//System.out.println("Konto");
-				this.kontostand_tx(connection, rand.nextInt(10000000));
+				if( auswahl <= verKonto)
+				{
+					//System.out.println("Konto");
+					this.kontostand_tx(connection, rand.nextInt(10000000));
+					connection.commit();
+				}
+				else if((auswahl > verKonto) && (auswahl < (verKonto + verEinzahlung)) )
+				{
+					//System.out.println("einzahlung");
+					this.einzahlung_tx(connection, rand.nextInt(10000000), rand.nextInt(1000), rand.nextInt(100), rand.nextInt());
+					
+					connection.commit();
+				}
+				else if(auswahl > (verKonto + verEinzahlung) && (auswahl < (verKonto + verEinzahlung + verAnalyse))) 
+				{
+					//System.out.println("Analyse");
+					this.analyse_tx(connection, rand.nextDouble());
+					connection.commit();
+				}
 			}
-			else if((auswahl > verKonto) && (auswahl < (verKonto + verEinzahlung)) )
+			catch(SQLException e)
 			{
-				//System.out.println("einzahlung");
-				this.einzahlung_tx(connection, rand.nextInt(10000000), rand.nextInt(1000), rand.nextInt(100), rand.nextInt());
+				
 			}
-			else if(auswahl > (verKonto + verEinzahlung) && (auswahl < (verKonto + verEinzahlung + verAnalyse))) 
-			{
-				//System.out.println("Analyse");
-				this.analyse_tx(connection, rand.nextDouble());
-			}
-			
 			
 			if(phase == 1)
 				actions++;
@@ -177,7 +188,7 @@ public class LoadDriver extends Thread {
 			//rss.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			System.out.println("einzahlung");
+			//System.out.println("einzahlung");
 			//e.printStackTrace();
 		}
 		
