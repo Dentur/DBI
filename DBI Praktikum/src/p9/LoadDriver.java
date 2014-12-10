@@ -110,7 +110,7 @@ public class LoadDriver extends Thread {
 			else if((auswahl > verKonto) && (auswahl < (verKonto + verEinzahlung)) )
 			{
 				//System.out.println("einzahlung");
-				this.einzahlung_tx(connection, rand.nextInt(10000000), rand.nextInt(1000), rand.nextInt(100), rand.nextInt());
+				//this.einzahlung_tx(connection, rand.nextInt(10000000), rand.nextInt(1000), rand.nextInt(100), rand.nextInt());
 			}
 			else if(auswahl > (verKonto + verEinzahlung) && (auswahl < (verKonto + verEinzahlung + verAnalyse))) 
 			{
@@ -133,14 +133,15 @@ public class LoadDriver extends Thread {
 		System.out.println("Thread finished with : " + actions +" Querys");
 	}
 	
-	public double kontostand_tx(Connection cn ,int kd_id)
+	public int kontostand_tx(Connection cn ,int kd_id)
 	{
 		Statement st = null;
 		ResultSet rs = null;
-		double erg = 0;
+		int erg = 0;
 		try {
 			st = cn.createStatement();
 			rs = st.executeQuery("SELECT balance FROM accounts WHERE accid = " + kd_id + ";");
+			//rs.first();
 			erg = rs.getInt(1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -165,6 +166,7 @@ public class LoadDriver extends Thread {
 			st.executeUpdate("UPDATE accounts SET balance = balance + " + delta + " WHERE accid = " + kd_id + ";");
 			
 			rs = st.executeQuery("SELECT balance FROM accounts WHERE accid = " + kd_id + ";");
+			//rs.first();
 			st.executeQuery("INSERT INTO history (accid, tellerid, delta, branchid, accbalance) VALUES ("+ kd_id + "," + tl_id + "," + delta + "," + br_id + "," + rs.getInt(1) + ");");
 			
 			erg = rs.getInt(1);
@@ -186,6 +188,7 @@ public class LoadDriver extends Thread {
 		try {
 			st = cn.createStatement();
 			rs = st.executeQuery("SELECT COUNT(delta) AS Anzahl FROM history WHERE delta = " + delta + ";");
+			//rs.first();
 			anz = rs.getInt(1);
 			rs.close();
 		} catch (SQLException e) {
