@@ -75,26 +75,11 @@ public class LoadDriver extends Thread {
 			throw e;
 		}
 		
-		//Set all parameters
-		if(warmupT >= 0)
-			warmupTime = warmupT;
-		else
-			warmupTime = 0;
-		
+		//Set all parameters		
 		if(lagT >= 0)
 			lagTime = lagT;
 		else
 			lagTime = 0;
-		
-		if(measureT >= 0)
-			measureTime = measureT;
-		else
-			measureTime = 0;
-		
-		if(cooldownT >= 0)
-			cooldownTime = cooldownT;
-		else
-			cooldownTime = 0;
 		
 		if(verKonto >= 0)
 			this.verKonto = verKonto;
