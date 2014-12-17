@@ -176,6 +176,7 @@ public class LoadDriver extends Thread {
 			rs.next();
 			erg = rs.getInt(1);
 		} catch (SQLException e) {
+			this.actions--;
 			// TODO Auto-generated catch block
 			System.out.println("konto");
 			e.printStackTrace();
@@ -232,7 +233,9 @@ public class LoadDriver extends Thread {
 			this.pstEinzInsHistory.executeUpdate();
 			//rss.close();
 		} catch (SQLException e) {
+			this.actions--;
 			try {
+				
 				connection.rollback();
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
@@ -263,6 +266,7 @@ public class LoadDriver extends Thread {
 			anz = rs.getInt(1);
 			rs.close();
 		} catch (SQLException e) {
+			this.actions--;
 			// TODO Auto-generated catch block
 			System.out.println("analyse");
 			e.printStackTrace();
