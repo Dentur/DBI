@@ -236,6 +236,7 @@ public class LoadDriver extends Thread {
 			//rss.close();
 		} catch (SQLException e) {
 			this.actions--;
+			//System.out.println("Konflickt!");
 			try {
 				
 				connection.rollback();
