@@ -8,7 +8,7 @@ import java.sql.Statement;
 public class Manager {
 	//Parameter
 	int AnzahlLoadDriver = 5;
-	String VerbindungsaufbauString = "jdbc:sqlserver://192.168.122.80:1433; databaseName=BenchmarkDB;user=test;password=123";
+	String VerbindungsaufbauString = "jdbc:sqlserver://192.168.122.97:1433; databaseName=BenchmarkDB;user=test;password=123";
 	long warmupTime = 240*1000;
 	long measureTime = 300*1000;
 	long cooldownTime = 60*1000;
