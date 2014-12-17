@@ -25,11 +25,7 @@ public class LoadDriver extends Thread {
 	
 	PreparedStatement pstKt;
 	PreparedStatement pstAl;
-	PreparedStatement pstEinzBraBalance;
-	PreparedStatement pstEinzUpBranch;
-	PreparedStatement pstEinzUpTellers;
-	PreparedStatement pstEinzUpAccounts;
-	PreparedStatement pstEinzAccBalance;
+	PreparedStatement pstUpdate;
 	PreparedStatement pstEinzInsHistory;
 	
 	/**
@@ -63,12 +59,8 @@ public class LoadDriver extends Thread {
 			connection.setAutoCommit(false);
 			pstKt = connection.prepareStatement("SELECT balance FROM accounts WHERE accid = ?;");
 			pstAl = connection.prepareStatement("SELECT COUNT(delta) AS Anzahl FROM history WHERE delta = ?;");
-			pstEinzBraBalance = connection.prepareStatement("SELECT balance FROM branches WHERE branchid = ?;");
-			pstEinzUpBranch = connection.prepareStatement("UPDATE branches SET balance = ? WHERE branchid = ?;");
-			pstEinzUpTellers = connection.prepareStatement("UPDATE tellers SET balance = ? WHERE tellerid = ?;");
-			pstEinzUpAccounts = connection.prepareStatement("UPDATE accounts SET balance = ? WHERE accid = ?;");
-			pstEinzAccBalance = connection.prepareStatement("SELECT balance FROM accounts WHERE accid = ?;");
-			pstEinzInsHistory = connection.prepareStatement("INSERT INTO history (accid, tellerid, delta, branchid, accbalance, cmmnt) VALUES (?,?,?,?,?,?);");
+			pstUpdate = connection.prepareStatement("UPDATE branches SET balance = balance + ? WHERE branchid = ?;UPDATE tellers SET balance = balance + ? WHERE tellerid = ?;UPDATE accounts SET balance = balance + ? WHERE accid = ?;");
+			pstEinzInsHistory = connection.prepareStatement("INSERT INTO history (accid, tellerid, delta, branchid, accbalance, cmmnt) VALUES (?,?,?,?,(SELECT balance FROM accounts WHERE accid = ?),?);");
 		}
 		catch(SQLException e)
 		{
@@ -202,38 +194,23 @@ public class LoadDriver extends Thread {
 		ResultSet rs = null;
 		int erg = 0;
 		try {
-			pstEinzBraBalance.setInt(1, br_id);
-			rs = this.pstEinzBraBalance.executeQuery();
-			rs.next();
 			
-			delta = delta + rs.getInt(1);
-			rs.close();
-			
-			this.pstEinzUpBranch.setInt(1, delta);
-			this.pstEinzUpBranch.setInt(2, br_id);
-			this.pstEinzUpBranch.executeUpdate();
-			
-			this.pstEinzUpTellers.setInt(1, delta);
-			this.pstEinzUpTellers.setInt(2, tl_id);
-			this.pstEinzUpTellers.executeUpdate();
-
-			this.pstEinzUpAccounts.setInt(1, delta);
-			this.pstEinzUpAccounts.setInt(2, kd_id);
-			this.pstEinzUpAccounts.executeUpdate();
-			
-			this.pstEinzAccBalance.setInt(1, kd_id);
-			ResultSet rss = this.pstEinzAccBalance.executeQuery();
-			rss.next();
-			erg = rss.getInt(1);
+			this.pstUpdate.setInt(1, delta);
+			this.pstUpdate.setInt(2, br_id);
+			this.pstUpdate.setInt(3, delta);
+			this.pstUpdate.setInt(4, tl_id);
+			this.pstUpdate.setInt(5, delta);
+			this.pstUpdate.setInt(6, kd_id);
+			this.pstUpdate.executeUpdate();
 			
 			this.pstEinzInsHistory.setInt(1, kd_id);
 			this.pstEinzInsHistory.setInt(2, tl_id);
 			this.pstEinzInsHistory.setInt(3, delta);
 			this.pstEinzInsHistory.setInt(4, br_id);
-			this.pstEinzInsHistory.setInt(5, erg);
+			this.pstEinzInsHistory.setInt(5, kd_id);
 			this.pstEinzInsHistory.setString(6, "abcdeabcdeabcdeabcdeabcdeabcd");
 			this.pstEinzInsHistory.executeUpdate();
-			//rss.close();
+
 		} catch (SQLException e) {
 			this.actions--;
 			try {
@@ -258,7 +235,6 @@ public class LoadDriver extends Thread {
 	 */
 	public int analyse_tx(Connection cn, int delta)
 	{
-		Statement st = null;
 		ResultSet rs = null;
 		int anz = 0;
 		try {
