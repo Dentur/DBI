@@ -114,6 +114,13 @@ public class LoadDriver extends Thread {
 		actions = 0;
 		while(run)
 		{
+			
+			try {
+				sleep(lagTime);
+			} catch (InterruptedException e) {
+				//Interupt exeption
+				//mache erstmal nichts
+			}
 			//Beende wenn die endphase erreicht wurde
 			if(phase == 3)
 				run = false;
@@ -150,12 +157,7 @@ public class LoadDriver extends Thread {
 				actions++;
 			
 			
-			try {
-				sleep(lagTime);
-			} catch (InterruptedException e) {
-				//Interupt exeption
-				//mache erstmal nichts
-			}
+			
 		}
 		System.out.println("Thread finished with : " + actions +" Querys");
 	}
